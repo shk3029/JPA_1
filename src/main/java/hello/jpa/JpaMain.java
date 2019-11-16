@@ -13,23 +13,20 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        // code
-        List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                        .setFirstResult(5)
-                        .setMaxResults(8)
-                        .getResultList();
-        result.stream().forEach(x-> System.out.println("name" + x.getName()));
+        try {
+            Member member = new Member();
+            member.setId(2L);
+            member.setUsername("kb");
+            member.setRoleType(RoleType.ADMIN);
+            em.persist(member);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
 
+        } finally {
+            em.close();
+        }
 
-
-      /*  Member member = em.find(Member.class, 1L);
-        System.out.println(member.getId());
-        System.out.println(member.getName());
-        member.setName("ksjsx");*/
-
-        tx.commit();
-
-        em.close();
         emf.close();
 
     }
